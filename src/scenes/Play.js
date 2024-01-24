@@ -23,6 +23,7 @@ class Play extends Phaser.Scene {
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        mouseInput = this.input
         this.p1Score = 0
         let scoreConfig = {
             fontFamily: 'Courier',
@@ -43,6 +44,15 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5)
             this.gameOver = true
         }, null, this)
+        this.p1Rocket.setInteractive({
+            draggable: true,
+            useHandCursor: true
+        })
+        this.p1Rocket.on('drag', (pointer, dragX, dragY) => {
+            this.p1Rocket.x = dragX
+            // this.p1Rocket.y = dragY
+            console.log(`Dragging `)
+        })
     }
 
     update() {
