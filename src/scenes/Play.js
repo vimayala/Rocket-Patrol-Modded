@@ -18,7 +18,7 @@ class Play extends Phaser.Scene {
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0)
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 20).setOrigin(0, 0)
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0, 0)
-        this.mini01 = new Mini(this, game.config.width, borderUISize * 9, 'mini', 0, 40).setOrigin(0,0).setScale(0.5)
+        this.mini01 = new Mini(this, game.config.width, borderUISize * 9, 'mini', 0, 35).setOrigin(0,0).setScale(0.5)
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
         keyRESET = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
@@ -35,7 +35,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig)
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.scoreLeft, scoreConfig)
         this.gameOver = false
         scoreConfig.fixedWidth = 0
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
@@ -105,6 +105,7 @@ class Play extends Phaser.Scene {
         this.scoreLeft.text = this.p1Score
         this.sound.play('sfx-explosion')
     }
+
     miniExplode(mini) {
         mini.alpha = 0
         let boom = this.add.sprite(mini.x, mini.y, 'explosion-2').setOrigin(0, 0).setScale(0.5)
@@ -119,5 +120,12 @@ class Play extends Phaser.Scene {
         var sfxExplode2 = this.sound.add('sfx-explosion')
         sfxExplode2.setRate(1.75)
         sfxExplode2.play()
+        if(mini.moveSpeed < 9){
+            mini.moveSpeed *= 1.1
+        }
+        else{
+            mini.moveSpeed = 4.5
+        }
+        mini.points += 1
     }
 }

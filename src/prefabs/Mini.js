@@ -3,11 +3,11 @@ class Mini extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame)
         scene.add.existing(this)
         this.points = pointValue
-        this.moveSpeed = (game.settings.spaceshipSpeed) * 1.65
+        this.moveSpeed = game.settings.miniSpeed
     }
 
     update () {
-        this.x -= this.moveSpeed        // move spaceship left
+        this.x -= this.moveSpeed
         if(this.x <= 0 - this.width) {
             this.x = game.config.width
         }
