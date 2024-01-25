@@ -49,9 +49,6 @@ class Play extends Phaser.Scene {
         // }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.scoreLeft, scoreConfig)
         this.initialTime = game.settings.gameTimer / 1000
-        if(game.settings.gameTimer == 60000){
-            console.log("1:00")
-        } 
         this.timeDisplay = this.add.text(borderUISize + borderPadding + 450, borderUISize + borderPadding * 2, `0:${game.settings.gameTimer / 1000}`, scoreConfig)
 
 
@@ -82,6 +79,14 @@ class Play extends Phaser.Scene {
         this.p1Rocket.on('drag', (pointer, dragX, dragY) => {
             this.p1Rocket.x = dragX
             // this.p1Rocket.y = dragY
+        })
+
+
+        this.p1Rocket.on('dragend', (pointer, target) => {
+            // note: the message below will be superseded by the dragend event above
+            console.log(`Dropped`)
+            this.p1Rocket.isFiring = true
+            this.p1Rocket.sfxShot.play()
         })
 
         // maybe drag, once let go, fire but don't let them move the rocket freely, only x
@@ -145,14 +150,18 @@ class Play extends Phaser.Scene {
             // semi
         // game.settings.gameTimer = game.settings.gameTimer -
 
-        var seconds = this.initialTime % 60
-        if(seconds < 10){
-            this.timeDisplay.text = `${Math.floor(this.initialTime / 60)}:0${seconds}` 
+        if(!this.gameOver){
+            var seconds = this.initialTime % 60
+            if(seconds < 10){
+                this.timeDisplay.text = `${Math.floor(this.initialTime / 60)}:0${seconds}` 
+            }
+            else{
+                this.timeDisplay.text = `${Math.floor(this.initialTime / 60)}:${seconds}`
+            }
         }
         else{
-            this.timeDisplay.text = `${Math.floor(this.initialTime / 60)}:${seconds}`
+            this.timeDisplay.text = `0:00` 
         }
-
 
 
     }
