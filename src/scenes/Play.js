@@ -36,9 +36,40 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
+        // let timeConfig = {
+        //     fontFamily: 'Courier',
+        //     fontSize: '28px', 
+        //     backgroundColor: '#F3B141', 
+        //     color: '#843605',
+        //     align: 'right', padding: {
+        //         top: 5,
+        //         bottom: 5,
+        //     },
+        //     fixedWidth: 100
+        // }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.scoreLeft, scoreConfig)
+        this.initialTime = game.settings.gameTimer / 1000
+        if(game.settings.gameTimer == 60000){
+            console.log("1:00")
+        } 
+        this.timeDisplay = this.add.text(borderUISize + borderPadding + 450, borderUISize + borderPadding * 2, `0:${game.settings.gameTimer / 1000}`, scoreConfig)
+
+
+        // try to get countdownt o 1:00, not 0:60
+
+        // if(game.settings.gameTimer == 60000){
+        //     this.timeDisplay.text = '1:00'
+        // }
+
+
+        // else{
+        //     this.timeDisplay = this.add.text(borderUISize + borderPadding + 450, borderUISize + borderPadding * 2, `0:${game.settings.gameTimer / 1000}`, scoreConfig)
+        // }
         this.gameOver = false
         scoreConfig.fixedWidth = 0
+        this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: (!this.gameOver)});
+        // cchange loop condition ??
+
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5)
@@ -51,8 +82,22 @@ class Play extends Phaser.Scene {
         this.p1Rocket.on('drag', (pointer, dragX, dragY) => {
             this.p1Rocket.x = dragX
             // this.p1Rocket.y = dragY
-            console.log(`Dragging `)
         })
+
+        // maybe drag, once let go, fire but don't let them move the rocket freely, only x
+
+        // this.time.addEvent({ delay: Phaser.Timer.SECOND, callback: tick, callbackScope: this, loop: true });
+
+
+
+        // this.timer = game.time.events.loop(Phaser.Timer.SECOND, this.tick, this);
+
+
+        // this.timeInSeconds = game.settings.gameTimer / 1000;
+        // this.timeDisplay = this.game.add.text(220, 30, "0:00", scoreConfig);
+        // this.timeDisplay.anchor.set(0.5, 0.5);
+        // this.timer = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, 
+        // this);
     }
 
     update() {
@@ -89,7 +134,31 @@ class Play extends Phaser.Scene {
             this.miniExplode(this.mini01)
  
         }
+        // this.scoreLeft.text = this.p1Score
+
+        // this.timer = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
+        // this.game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
+
+
+
+
+            // semi
+        // game.settings.gameTimer = game.settings.gameTimer -
+
+        var seconds = this.initialTime % 60
+        if(seconds < 10){
+            this.timeDisplay.text = `${Math.floor(this.initialTime / 60)}:0${seconds}` 
+        }
+        else{
+            this.timeDisplay.text = `${Math.floor(this.initialTime / 60)}:${seconds}`
+        }
+
+
+
     }
+
+
+
 
     checkCollision(rocket, ship) {
         if(rocket.x < ship.x + ship.width && 
@@ -138,4 +207,19 @@ class Play extends Phaser.Scene {
         }
         mini.points += 1
     }
+}
+
+// function updateCounter ()
+// {
+//     this.initialTime -= 1; // One second
+//     text.setText('Countdown: ' + formatTime(this.initialTime));
+// }
+
+// timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true });
+
+
+function onEvent ()
+{
+    this.initialTime -= 1; // One second
+    // text.setText('Countdown: ' + formatTime(this.initialTime));
 }
