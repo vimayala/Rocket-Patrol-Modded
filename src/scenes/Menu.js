@@ -8,6 +8,8 @@ class Menu extends Phaser.Scene {
         this.load.image('spaceship', './assets/spaceship.png')
         this.load.image('mini', './assets/spaceship_mini.png')
         this.load.image('starfield', './assets/starfield.png')
+        this.load.image('green', './assets/green_pixel.png')
+        this.load.audio('8bitMusic', './assets/8bit-spaceshooter.mp3')
         this.load.spritesheet('explosion', './assets/explosion.png', {
             frameWidth: 64,
             frameHeight: 32,
@@ -62,7 +64,7 @@ class Menu extends Phaser.Scene {
             game.settings = {
                 spaceshipSpeed: 3,
                 miniSpeed: 4,
-                gameTimer: 60000
+                gameTimer: 10000
             }
             this.sound.play('sfx-select')
             this.scene.start('playScene')

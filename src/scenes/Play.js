@@ -4,7 +4,6 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // this.add.text(20, 20, "Rocket Patrol Play")
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0)
         
         // add rectangle with x coord, y coord, width, height, and color (hex) w/ ssetOrigin to adjust rectangle's origin
@@ -25,7 +24,10 @@ class Play extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
         mouseInput = this.input
         this.p1Score = 0
-        let scoreConfig = {
+        this.collision = false
+        this.music = this.sound.add("8bitMusic", {loop: false})
+        this.music.play()
+        scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px', 
             backgroundColor: '#F3B141', 
@@ -36,85 +38,94 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        // let timeConfig = {
-        //     fontFamily: 'Courier',
-        //     fontSize: '28px', 
-        //     backgroundColor: '#F3B141', 
-        //     color: '#843605',
-        //     align: 'right', padding: {
-        //         top: 5,
-        //         bottom: 5,
-        //     },
-        //     fixedWidth: 100
-        // }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.scoreLeft, scoreConfig)
         this.initialTime = game.settings.gameTimer / 1000
         this.timeDisplay = this.add.text(borderUISize + borderPadding + 450, borderUISize + borderPadding * 2, `0:${game.settings.gameTimer / 1000}`, scoreConfig)
-
-
-        // try to get countdownt o 1:00, not 0:60
-
-        // if(game.settings.gameTimer == 60000){
-        //     this.timeDisplay.text = '1:00'
-        // }
-
-
-        // else{
-        //     this.timeDisplay = this.add.text(borderUISize + borderPadding + 450, borderUISize + borderPadding * 2, `0:${game.settings.gameTimer / 1000}`, scoreConfig)
-        // }
         this.gameOver = false
         scoreConfig.fixedWidth = 0
-        this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: (!this.gameOver)});
-        // cchange loop condition ??
-
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5)
-            this.gameOver = true
-        }, null, this)
+        this.time.addEvent({ delay: 1000, callback: () => {this.initialTime -= 1}, callbackScope: this, loop: (!this.gameOver)});
         this.p1Rocket.setInteractive({
             draggable: true,
             useHandCursor: true
         })
         this.p1Rocket.on('drag', (pointer, dragX, dragY) => {
             this.p1Rocket.x = dragX
-            // this.p1Rocket.y = dragY
         })
 
 
         this.p1Rocket.on('dragend', (pointer, target) => {
-            // note: the message below will be superseded by the dragend event above
-            console.log(`Dropped`)
             this.p1Rocket.isFiring = true
             this.p1Rocket.sfxShot.play()
         })
-
-        // maybe drag, once let go, fire but don't let them move the rocket freely, only x
-
-        // this.time.addEvent({ delay: Phaser.Timer.SECOND, callback: tick, callbackScope: this, loop: true });
+        // this.add.particles(0, 0, 'green', { speed: 10 })
 
 
+        // const shape1 = new Phaser.Geom.Circle(0, 0, 160)
 
-        // this.timer = game.time.events.loop(Phaser.Timer.SECOND, this.tick, this);
+        // const emitter = this.add.particles(400, 300, 'green', {
+        //     frame: {
+        //         frames: [0]
+        //     },
+        //     lifespan: 750,
+        //     quantity: 1,    // number of simultaneous active emitters
+        //     scale: { start: 2, end: 0.5 }
+        // })
 
 
-        // this.timeInSeconds = game.settings.gameTimer / 1000;
-        // this.timeDisplay = this.game.add.text(220, 30, "0:00", scoreConfig);
-        // this.timeDisplay.anchor.set(0.5, 0.5);
-        // this.timer = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, 
-        // this);
+        // emitter.addEmitZone({ type: 'edge', source: shape1, quantity: 64, total: 64 })
+        // emitter.addEmitZone({ type: 'edge', source: shape2, quantity: 64, total: 64 })
+        // emitter.addEmitZone({ type: 'edge', source: shape3, quantity: 64, total: 64 })
+        // emitter.addEmitZone({ type: 'edge', source: shape4, quantity: 64, total: 64 })
+        // emitter.addEmitZone({ type: 'edge', source: shape5, quantity: 64, total: 64 })
+
+        // let line = new Phaser.Geom.Line(32, 32, 32, h);
+
+        // this.anims.create({
+        //     key: 'spin',
+        //     frameRate: 12,
+        //     frames: this.anims.generateFrameNumbers('green', { start: 0, end: 0 }),
+        //     repeat: -1,
+        //     yoyo: true
+        // })
+
+        // this.add.particles(400, 400, 'items', {
+        //     anim: {
+        //         anims: [ 'spin', 'pulse' ],
+        //         cycle: true,
+        //         quantity: 10
+        //     },
+        //     gravityX: 200,
+        //     lifespan: 2700,
+        //     scale: { start: 2, end: 2 },
+        //     hold: 250,
+        //     emitZone: { type: 'edge', quantity: 10, yoyo: true },
+        // })
+
+        // emitter = this.add.particles('green').createEmitter({
+        //     speed: {min: -100, max: 100},
+        //     angle: {min: 0, max: 360},
+        //     scale: {start: 0.5, end: 0},
+        //     lifespan: 2000,
+        //     gravityY: 200,
+        //     gravityX: 100,
+        //     quantity: 2,
+        //     blendMode: 'ADD'
+        // })
+
     }
 
     update() {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)) {
             this.scene.restart()
+            this.music.stop()
         }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene")
+            this.music.stop()
         }
         this.starfield.tilePositionX -= 3.5
         if(!this.gameOver) {
-            this.p1Rocket.update()
+            this.p1Rocket.update(Play)
             this.ship01.update()
             this.ship02.update()
             this.ship03.update()
@@ -139,16 +150,12 @@ class Play extends Phaser.Scene {
             this.miniExplode(this.mini01)
  
         }
-        // this.scoreLeft.text = this.p1Score
 
-        // this.timer = this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
-        // this.game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
-
-
-
-
-            // semi
-        // game.settings.gameTimer = game.settings.gameTimer -
+        // if(this.p1Rocket.y < borderUISize * 3 + borderPadding) {
+        //     console.log("rrr")
+        //     this.initialTime -= 3
+        //     console.log(`${this.initialTime}`)
+        // }
 
         if(!this.gameOver){
             var seconds = this.initialTime % 60
@@ -162,14 +169,22 @@ class Play extends Phaser.Scene {
         else{
             this.timeDisplay.text = `0:00` 
         }
-
-
+        if(this.p1Rocket.timeFlag){
+            this.initialTime -=3
+            game.settings.gameTimer -= 3000
+            this.p1Rocket.timeFlag = false
+        }
+        if(this.initialTime <= 0){
+            this.gameOver = true
+            this.timeDisplay.text = '0:00'
+            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5)
+            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5)
+            this.gameOver = true
+        }
     }
 
-
-
-
     checkCollision(rocket, ship) {
+        this.collision = true
         if(rocket.x < ship.x + ship.width && 
             rocket.x + rocket.width > ship.x &&
             rocket.y < ship.y + ship.height &&
@@ -192,6 +207,22 @@ class Play extends Phaser.Scene {
         this.p1Score += ship.points
         this.scoreLeft.text = this.p1Score
         this.sound.play('sfx-explosion')
+        this.initialTime += 2
+        // this.initialTime += 3
+        // emitter.setPosition(this.p1Rocket.x, this.p1Rocket.y)
+        // this.add.particles(0, 0, 'items', {
+        //     anim: {
+        //         anims: [ 'spin', 'pulse' ],
+        //         cycle: true,
+        //         quantity: 10
+        //     },
+        //     gravityX: 200,
+        //     lifespan: 2700,
+        //     scale: { start: 2, end: 2 },
+        //     hold: 250,
+        //     emitZone: { type: 'edge', quantity: 10, yoyo: true },
+        // })
+        
     }
 
     miniExplode(mini) {
@@ -216,19 +247,9 @@ class Play extends Phaser.Scene {
         }
         mini.points += 1
     }
-}
 
-// function updateCounter ()
-// {
-//     this.initialTime -= 1; // One second
-//     text.setText('Countdown: ' + formatTime(this.initialTime));
-// }
+    // takeTime() {
+        
+    // }
 
-// timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true });
-
-
-function onEvent ()
-{
-    this.initialTime -= 1; // One second
-    // text.setText('Countdown: ' + formatTime(this.initialTime));
 }
