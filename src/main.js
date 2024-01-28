@@ -1,5 +1,5 @@
 // Name: Victoria Ayala
-// Title: Rocket Patrol
+// Title: Rocket Patrol Mini Game
 // Time: ~8 hours (including time I took to mess up and take unsuccessful mods out)
 // Modification 
 // (detailed descriptions in  README.md):
