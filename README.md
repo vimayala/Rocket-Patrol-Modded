@@ -1,12 +1,14 @@
 Modifications:
 - [x] Create a new enemy Spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (5)
-    - new enemy (Mini) moves at a faster speed that speed up per hit so players can't time their hits, then reverts to a slower speed once the max is hit
-    - it also uses another explosion animation and a sped up SFX due to its size
-- [ ] mouse control to fire
-- [ ] add/sub time per fire
-
-- [ ] (maybe) particle system
-
-or
-
-- [ ] title screen + grab bag of other mods
+    - A new enemy named Mini was created. It is initally worth 35 points, but its value increases by 1 point per hit. It moves at a faster speed per hit so players can't time the hits and continue getting more and more points. As well, it has a max speed. When hit after the max speed, it goes back to the inital speed and repeats the same pattern. When hit, the timer will gain one second. It uses a differently colored explosion animation and a sped ip SFX due to its size.
+- [x] Implement a new timing/scoring mechanism that adds time to the clock for successful hits and subtracts time for misses (5)
+    - Each Spaceship that gets hit will give the player two extra seconds of play time. Each miss results in three seconds subtracted. This wasn't done with the intention of making the game challenging, but to give the game a mini-game feeling. Adding more time rather than subtracting would make it run too long and feel like it was dragging on. Especially with the mini rocket implementation, this makes the game feel a bit more fair.
+- [x] Implement mouse control for player movement and left mouse click to fire (5)
+    - A player can drag the rocket on its x-coordinates and let go to fire. Or the rocket can be be moved with arrows and clicked on and will still fire. While the player can control the y-coordinates with the aroows, allowing this with mouse control would let players drag the rocket to the spaceships. 
+- [x] Display the time remaining (in seconds) on the screen (3)
+    - The time will display the seconds on the top right-hand corner.
+- [x] Add your own (copyright-free) looping background music to the Play scene (keep the volume low and be sure that multiple instances of your music don't play when the game restarts) (1)
+    - The music will begin and restart when a player begins playing. The music will not loop over itself, but it will loop beyond its 1:22 time stamp.
+    - Source: https://opengameart.org/content/8-bit-epic-space-shooter-music
+- [x] Allow the player to control the Rocket after it's fired (1)
+    - Once fired, rockets can still move left and right with the arrows, allowing players to have more control over the rocket.

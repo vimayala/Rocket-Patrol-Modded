@@ -5,9 +5,6 @@ class Play extends Phaser.Scene {
 
     create() {
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0)
-        
-        // add rectangle with x coord, y coord, width, height, and color (hex) w/ ssetOrigin to adjust rectangle's origin
-        // all defined with variables rather than hardcoded for flexibility
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0,0)       // green
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0)                                      // all white
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0,0)      // |
@@ -25,7 +22,7 @@ class Play extends Phaser.Scene {
         mouseInput = this.input
         this.p1Score = 0
         this.collision = false
-        this.music = this.sound.add("8bitMusic", {loop: false})
+        this.music = this.sound.add("8bitMusic", {loop: true, volume: 0.8})
         this.music.play()
         scoreConfig = {
             fontFamily: 'Courier',
@@ -38,7 +35,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.scoreLeft, scoreConfig)
+        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, 0, scoreConfig)
         this.initialTime = game.settings.gameTimer / 1000
         this.timeDisplay = this.add.text(borderUISize + borderPadding + 450, borderUISize + borderPadding * 2, `0:${game.settings.gameTimer / 1000}`, scoreConfig)
         this.gameOver = false
@@ -57,61 +54,6 @@ class Play extends Phaser.Scene {
             this.p1Rocket.isFiring = true
             this.p1Rocket.sfxShot.play()
         })
-        // this.add.particles(0, 0, 'green', { speed: 10 })
-
-
-        // const shape1 = new Phaser.Geom.Circle(0, 0, 160)
-
-        // const emitter = this.add.particles(400, 300, 'green', {
-        //     frame: {
-        //         frames: [0]
-        //     },
-        //     lifespan: 750,
-        //     quantity: 1,    // number of simultaneous active emitters
-        //     scale: { start: 2, end: 0.5 }
-        // })
-
-
-        // emitter.addEmitZone({ type: 'edge', source: shape1, quantity: 64, total: 64 })
-        // emitter.addEmitZone({ type: 'edge', source: shape2, quantity: 64, total: 64 })
-        // emitter.addEmitZone({ type: 'edge', source: shape3, quantity: 64, total: 64 })
-        // emitter.addEmitZone({ type: 'edge', source: shape4, quantity: 64, total: 64 })
-        // emitter.addEmitZone({ type: 'edge', source: shape5, quantity: 64, total: 64 })
-
-        // let line = new Phaser.Geom.Line(32, 32, 32, h);
-
-        // this.anims.create({
-        //     key: 'spin',
-        //     frameRate: 12,
-        //     frames: this.anims.generateFrameNumbers('green', { start: 0, end: 0 }),
-        //     repeat: -1,
-        //     yoyo: true
-        // })
-
-        // this.add.particles(400, 400, 'items', {
-        //     anim: {
-        //         anims: [ 'spin', 'pulse' ],
-        //         cycle: true,
-        //         quantity: 10
-        //     },
-        //     gravityX: 200,
-        //     lifespan: 2700,
-        //     scale: { start: 2, end: 2 },
-        //     hold: 250,
-        //     emitZone: { type: 'edge', quantity: 10, yoyo: true },
-        // })
-
-        // emitter = this.add.particles('green').createEmitter({
-        //     speed: {min: -100, max: 100},
-        //     angle: {min: 0, max: 360},
-        //     scale: {start: 0.5, end: 0},
-        //     lifespan: 2000,
-        //     gravityY: 200,
-        //     gravityX: 100,
-        //     quantity: 2,
-        //     blendMode: 'ADD'
-        // })
-
     }
 
     update() {
@@ -150,12 +92,6 @@ class Play extends Phaser.Scene {
             this.miniExplode(this.mini01)
  
         }
-
-        // if(this.p1Rocket.y < borderUISize * 3 + borderPadding) {
-        //     console.log("rrr")
-        //     this.initialTime -= 3
-        //     console.log(`${this.initialTime}`)
-        // }
 
         if(!this.gameOver){
             var seconds = this.initialTime % 60
@@ -208,21 +144,6 @@ class Play extends Phaser.Scene {
         this.scoreLeft.text = this.p1Score
         this.sound.play('sfx-explosion')
         this.initialTime += 2
-        // this.initialTime += 3
-        // emitter.setPosition(this.p1Rocket.x, this.p1Rocket.y)
-        // this.add.particles(0, 0, 'items', {
-        //     anim: {
-        //         anims: [ 'spin', 'pulse' ],
-        //         cycle: true,
-        //         quantity: 10
-        //     },
-        //     gravityX: 200,
-        //     lifespan: 2700,
-        //     scale: { start: 2, end: 2 },
-        //     hold: 250,
-        //     emitZone: { type: 'edge', quantity: 10, yoyo: true },
-        // })
-        
     }
 
     miniExplode(mini) {
@@ -246,10 +167,7 @@ class Play extends Phaser.Scene {
             mini.moveSpeed = 4.5
         }
         mini.points += 1
+        this.initialTime += 1
     }
-
-    // takeTime() {
-        
-    // }
 
 }

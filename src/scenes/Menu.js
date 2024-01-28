@@ -64,7 +64,7 @@ class Menu extends Phaser.Scene {
             game.settings = {
                 spaceshipSpeed: 3,
                 miniSpeed: 4,
-                gameTimer: 10000
+                gameTimer: 60000
             }
             this.sound.play('sfx-select')
             this.scene.start('playScene')
@@ -80,8 +80,3 @@ class Menu extends Phaser.Scene {
         }
     }
 }
-
-// init() prepares any data for the scene
-// preload() prepares any assets we’ll need for the scene
-// create() adds objects to the scene
-// update() is a loop that runs continuously (every frame, ideally) and allows us to update logic and game objects
