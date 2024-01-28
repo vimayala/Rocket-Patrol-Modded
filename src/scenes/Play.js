@@ -58,6 +58,7 @@ class Play extends Phaser.Scene {
 
     update() {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)) {
+            
             this.scene.restart()
             this.music.stop()
         }
@@ -107,7 +108,6 @@ class Play extends Phaser.Scene {
         }
         if(this.p1Rocket.timeFlag){
             this.initialTime -=3
-            game.settings.gameTimer -= 3000
             this.p1Rocket.timeFlag = false
         }
         if(this.initialTime <= 0){
