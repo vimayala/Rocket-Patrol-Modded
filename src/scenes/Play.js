@@ -58,8 +58,8 @@ class Play extends Phaser.Scene {
 
     update() {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyRESET)) {
-            
             this.scene.restart()
+            this.initialTime = game.settings.gameTimer / 1000
             this.music.stop()
         }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
